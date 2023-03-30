@@ -2,11 +2,21 @@ import TMDB_API
 import Wiki_API
 import flask
 import database
+from flask_login import LoginManager
+
+# from database import create_table, Person, db
 from os import getenv
 
 app = flask.Flask(__name__)
 app.secret_key = getenv("secret_key")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
+# app.config["SQLALCHEMY_DATABASE_URI"] = getenv("DATABASE_URL")
+
+login_manager = LoginManager()
+
+# db.init_app(app)
+login_manager.init_app(app)
+
+# create_table(app)
 
 
 @app.route("/")
@@ -25,7 +35,17 @@ def handle_login():
             "That username doesn't exit, try typing it again or create an account."
         )
         return flask.redirect(flask.url_for("login"))
-    # user.isAuthenticated is more how it's actually done but htis is easier for demo
+
+
+# 1.Login queries against database username
+# 1. If username is in database continue
+# 2. Else flash message
+# 2.If user clicks create account
+# 1. Query against database for username
+# 2. If not in database
+# 1.Add and continue
+# 3. Else
+# 1. flash message saying to login
 
 
 @app.route("/index")
