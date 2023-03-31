@@ -1,3 +1,5 @@
 .env
 .dockerignore
 __pycache__
+aged-cloud-145.txt
+fly.toml

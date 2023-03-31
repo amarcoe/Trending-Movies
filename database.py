@@ -15,7 +15,9 @@ class Person(db.Model):
     def __repr__(self) -> str:
         return f"Person with username: {self.username} created"
 
-    # TODO: Create an authenticator function
+    def authenticate(username):
+        user = Person.query.filter_by(username=username).first()
+        return user is not None
 
 
 def create_table(app):
