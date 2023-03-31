@@ -2,25 +2,25 @@ import TMDB_API
 import Wiki_API
 import flask
 import os
-from database import create_table, Person, db
-
-# from flask_login import LoginManager, login_required
+from database import create_table, Users, db
+from flask_login import LoginManager, login_required, login_user
 
 app = flask.Flask(__name__)
 app.secret_key = os.getenv("secret_key")
 app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL")
 
-# login_manager = LoginManager()
+login_manager = LoginManager()
 
 db.init_app(app)
-# login_manager.init_app(app)
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(id):
+    return Users.query.get(id)
+
 
 create_table(app)
-
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return Person.get(user_id)
 
 
 @app.route("/")
@@ -32,9 +32,11 @@ def login():
 def handle_login():
     form_data = flask.request.form
     username = form_data["username"]
+    user = Users.authenticate(username)
 
     if "login" in flask.request.form:
-        if Person.authenticate(username):
+        if user:
+            login_user(user)
             return flask.redirect(flask.url_for("index"))
         else:
             flask.flash(
@@ -42,7 +44,7 @@ def handle_login():
             )
             return flask.redirect(flask.url_for("login"))
     elif "create_account" in flask.request.form:
-        if Person.authenticate(username):
+        if user:
             flask.flash("That account already exists, please login")
             return flask.redirect(flask.url_for("login"))
         else:
@@ -50,7 +52,7 @@ def handle_login():
 
 
 @app.route("/index")
-# @login_required
+@login_required
 def index():
     movie_data = TMDB_API.choose_harcode_or_trending()
     wiki_page_url = Wiki_API.get_wiki_url(movie_data["title"], movie_data["year"])
@@ -61,10 +63,11 @@ def index():
 
 @app.route("/create/<username>")
 def create_account(username):
-    person = Person(username=username)
-    db.session.add(person)
+    user = Users(username=username)
+    db.session.add(user)
     db.session.commit()
-    print(f"Created person with username {username}")
+    print(f"Created user with username {username}")
+    login_user(user)
     return flask.redirect((flask.url_for("index")))
 
 

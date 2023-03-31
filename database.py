@@ -1,11 +1,12 @@
 import os
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
 
 
 db = SQLAlchemy()
 
 
-class Person(db.Model):
+class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), nullable=False)
     movie_id = db.Column(db.Integer, nullable=True)
@@ -13,11 +14,14 @@ class Person(db.Model):
     ratings = db.Column(db.Integer, nullable=True)
 
     def __repr__(self) -> str:
-        return f"Person with username: {self.username} created"
+        return f"User with username: {self.username} created"
 
     def authenticate(username):
-        user = Person.query.filter_by(username=username).first()
-        return user is not None
+        user = Users.query.filter_by(username=username).first()
+        if user:
+            return user
+        else:
+            return None
 
 
 def create_table(app):
