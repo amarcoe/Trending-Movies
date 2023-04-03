@@ -55,6 +55,7 @@ def handle_login():
 @app.route("/index", methods=["GET", "POST"])
 @login_required
 def index():
+    print(current_user)
     # I like getting information in the if statements but for post I need it.
     # I think I need to build database so I can see how that works with routing and such.
     if flask.request.method == "POST":
@@ -80,15 +81,6 @@ def index():
         return flask.render_template(
             "index.html", movie_data=movie_data, wiki_page_url=wiki_page_url
         )
-
-
-@app.route("/keep_movie_data/<movie_id>")
-@login_required
-def keep_movie_data(movie_id):
-    movie_data = TMDB_API.get_movie_by_id(movie_id)
-    wiki_page_url = Wiki_API.get_wiki_url(movie_data["title"], movie_data["year"])
-
-    return flask.redirect(flask.url_for("comment", movie_id=movie_data["id"]))
 
 
 @app.route("/comment/<username>/<movie_id>/<comments>/<ratings>")
