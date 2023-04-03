@@ -61,6 +61,7 @@ def get_movie_by_id(movie_id):
         "overview": id_movie_overview,
         "poster": id_poster,
         "year": id_movie_release_year,
+        "id": movie_id,
     }
     return id_movie_data
 

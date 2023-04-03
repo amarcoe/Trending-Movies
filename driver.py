@@ -3,7 +3,7 @@ import Wiki_API
 import flask
 import os
 from database import create_table, Users, db
-from flask_login import LoginManager, login_required, login_user
+from flask_login import LoginManager, login_required, login_user, current_user
 
 app = flask.Flask(__name__)
 app.secret_key = os.getenv("secret_key")
@@ -25,6 +25,7 @@ create_table(app)
 
 @app.route("/")
 def login():
+    flask.session.clear()
     return flask.render_template("login.html")
 
 
@@ -51,14 +52,55 @@ def handle_login():
             return flask.redirect(flask.url_for("create_account", username=username))
 
 
-@app.route("/index")
+@app.route("/index", methods=["GET", "POST"])
 @login_required
 def index():
-    movie_data = TMDB_API.choose_harcode_or_trending()
+    # I like getting information in the if statements but for post I need it.
+    # I think I need to build database so I can see how that works with routing and such.
+    if flask.request.method == "POST":
+        movie_data = TMDB_API.get_movie_by_id(movie_id)
+        wiki_page_url = Wiki_API.get_wiki_url(movie_data["title"], movie_data["year"])
+
+        form_data = flask.request.form
+        if "rating" not in form_data and "comment" not in form_data:
+            flask.flash("Please rate and comment")
+        elif "rating" not in form_data:
+            flask.flash("Please rate the movie")
+        elif "comment" not in form_data:
+            flask.flash("Please leave a comment")
+        else:
+            # This will be go to leave_comment
+            # Just getting it to work basic so I can start database
+            return flask.redirect(flask.url_for("index"))
+
+    else:
+        movie_data = TMDB_API.choose_harcode_or_trending()
+        wiki_page_url = Wiki_API.get_wiki_url(movie_data["title"], movie_data["year"])
+
+        return flask.render_template(
+            "index.html", movie_data=movie_data, wiki_page_url=wiki_page_url
+        )
+
+
+@app.route("/keep_movie_data/<movie_id>")
+@login_required
+def keep_movie_data(movie_id):
+    movie_data = TMDB_API.get_movie_by_id(movie_id)
     wiki_page_url = Wiki_API.get_wiki_url(movie_data["title"], movie_data["year"])
-    return flask.render_template(
-        "index.html", movie_data=movie_data, wiki_page_url=wiki_page_url
-    )
+
+    return flask.redirect(flask.url_for("comment", movie_id=movie_data["id"]))
+
+
+@app.route("/comment/<username>/<movie_id>/<comments>/<ratings>")
+@login_required
+def leave_comment(comment):
+    print("whatever")
+
+
+#     username = db.Column(db.String(80), db.ForeignKey("Users.username"), nullable=False)
+#     movie_id = db.Column(db.Integer, nullable=False)
+#     comments = db.Column(db.String(500), nullable=False)
+#     ratings = db.Column(db.Integer, nullable=False)
 
 
 @app.route("/create/<username>")

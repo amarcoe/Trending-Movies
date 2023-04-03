@@ -24,5 +24,28 @@
             </a>
         </div>
     </div>
+
+    {% with messages = get_flashed_messages() %}  
+        {% if messages %} 
+        <div class="flash-messages">
+            {% for message in messages %}
+            <div class="flash-message">
+                <h1>{{message}}</h1>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+    
+    <div class="comment-section">
+        <h3>Leave a comment</h3>
+        <h3>username</h3>
+        <h3>rating: </h3>
+        <form method="POST" action="/index">
+            <input type="number" name="rating" min="1" max="10" step="1">
+            <textarea name="comment"></textarea>
+            <input type="submit" name="submit_comment"/>
+        </form>
+    </div>
 </body>
 </html>
