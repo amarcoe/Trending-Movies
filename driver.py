@@ -60,8 +60,13 @@ def index():
     movie_data = TMDB_API.choose_harcode_or_trending()
     wiki_page_url = Wiki_API.get_wiki_url(movie_data["title"], movie_data["year"])
 
+    comments = Comments.query.filter_by(movie_id=movie_data["id"]).all()
+
     return flask.render_template(
-        "index.html", movie_data=movie_data, wiki_page_url=wiki_page_url
+        "index.html",
+        movie_data=movie_data,
+        wiki_page_url=wiki_page_url,
+        comments=comments,
     )
 
 
@@ -73,12 +78,18 @@ def new_comment(movie_id):
     global max_two
     max_two += 1
 
+    comments = Comments.query.filter_by(movie_id=movie_id).all()
+    print(comments)
+
     if max_two == 2:
         max_two = 0
         return flask.redirect(flask.url_for("index"))
     else:
         return flask.render_template(
-            "index.html", movie_data=movie_data, wiki_page_url=wiki_page_url
+            "index.html",
+            movie_data=movie_data,
+            wiki_page_url=wiki_page_url,
+            comments=comments,
         )
 
 
