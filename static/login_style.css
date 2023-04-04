@@ -1,26 +1,68 @@
+/* set the background color of the page */
 html {
     background-color: #FFEAD0;
-}
+  }
   
 .flash-messages {
-    width: 75%;
-    margin: 0 auto;
+  width: 75%;
+  margin: 0 auto;
 }
 
 .flash-message {
-    font-size: 16px;
-    color: #fff;
-    background-color: black;
-    padding: 10px;
-    margin-bottom: 10px;
-    text-align: center;
+  font-size: 16px;
+  color: #fff;
+  background-color: black;
+  padding: 10px;
+  margin-bottom: 10px;
+  text-align: center;
 }
-
-
-.form-container {
+  
+  /* style the form container */
+  .form-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     height: 100vh;
   }
+  
+  /* style the form */
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* style the form input fields */
+  input[type="text"] {
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* style the form submit buttons */
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  /* style the hover effect of the form submit buttons */
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  

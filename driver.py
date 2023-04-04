@@ -27,7 +27,6 @@ create_table(app)
 
 @app.route("/")
 def login():
-    flask.session.clear()
     return flask.render_template("login.html")
 
 

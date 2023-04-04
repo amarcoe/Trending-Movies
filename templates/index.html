@@ -24,18 +24,6 @@
             </a>
         </div>
     </div>
-
-    {% with messages = get_flashed_messages() %}  
-        {% if messages %} 
-        <div class="flash-messages">
-            {% for message in messages %}
-            <div class="flash-message">
-                <h1>{{message}}</h1>
-            </div>
-            {% endfor %}
-        </div>
-        {% endif %}
-        {% endwith %}
     
     <div class="leave_comment">
         <h2>Leave a comment:</h2>
@@ -44,24 +32,30 @@
             <input type="hidden" name="movie_id" value="{{ movie_data["id"] }}">
             <h3>Rate it out of 10: </h3>
             <input type="number" name="rating" min="1" max="10" step="1">
-            <br> <br>
+            <br>
             <h3> Tell everyone what you thought:</h3>
             <textarea name="comment"></textarea>
-            <br> <br>
+            <br>
             <input type="submit" name="submit_comment"/>
         </form>
     </div>
     <div class = "comment_section">
         {% if comments %}
-            <h2>Comments:</h2>
+            <h2>Comments</h2>
             <ul>
                 {% for comment in comments %}
                 {% if comment.rating and comment.comment %}
-                    <li>{{ comment.username }}: {{ comment.rating }}, {{ comment.comment }}</li>
+                    <hr>
+                    <li>{{ comment.username }} {{ comment.rating }}  <br> {{ comment.comment }}</li>
+                    <hr>
                 {% elif comment.rating %}
-                    <li>{{ comment.username }}: {{ comment.rating }}</li>
+                    <hr>
+                    <li>{{ comment.username }} {{ comment.rating }}</li>
+                    <hr>
                 {% elif comment.comment %}
-                    <li>{{ comment.username }}: {{ comment.comment }}</li>
+                    <hr>
+                    <li>{{ comment.username }} {{ comment.comment }}</li>
+                    <hr>
                 {% endif %}
             {% endfor %}            
             </ul>
