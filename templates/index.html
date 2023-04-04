@@ -41,7 +41,9 @@
         <h3>Leave a comment</h3>
         <h3>username</h3>
         <h3>rating: </h3>
-        <form method="POST" action="/index">
+        <form method="POST" action="/comment">
+            <input type="hidden" name="username" value="{{ current_user.username }}">
+            <input type="hidden" name="movie_id" value="{{ movie_data["id"] }}">
             <input type="number" name="rating" min="1" max="10" step="1">
             <textarea name="comment"></textarea>
             <input type="submit" name="submit_comment"/>

@@ -23,10 +23,10 @@ class Users(db.Model, UserMixin):
 
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.Integer, db.ForeignKey("Users.id"), nullable=False)
     movie_id = db.Column(db.Integer, nullable=False)
-    comments = db.Column(db.String(500), nullable=False)
-    ratings = db.Column(db.Integer, nullable=False)
+    username = db.Column(db.String(80), nullable=False)
+    comment = db.Column(db.String(500), nullable=False)
+    rating = db.Column(db.Integer, nullable=False)
 
 
 def create_table(app):
