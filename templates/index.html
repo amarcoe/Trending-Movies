@@ -56,8 +56,14 @@
             <h2>Comments:</h2>
             <ul>
                 {% for comment in comments %}
-                <li>{{ comment.username }}: {{ comment.rating }}, {{ comment.comment }}</li>
-                {% endfor %}
+                {% if comment.rating and comment.comment %}
+                    <li>{{ comment.username }}: {{ comment.rating }}, {{ comment.comment }}</li>
+                {% elif comment.rating %}
+                    <li>{{ comment.username }}: {{ comment.rating }}</li>
+                {% elif comment.comment %}
+                    <li>{{ comment.username }}: {{ comment.comment }}</li>
+                {% endif %}
+            {% endfor %}            
             </ul>
         {% endif %}
     </div>

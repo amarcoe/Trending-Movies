@@ -97,6 +97,8 @@ def new_comment(movie_id):
 @login_required
 def leave_comment():
     form_data = flask.request.form
+    global max_two
+    max_two = 0
 
     comment = Comments(
         movie_id=form_data["movie_id"],
