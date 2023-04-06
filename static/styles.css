@@ -114,9 +114,16 @@ img {
     width: 100%;
 }
 
-.leave_comment label {
-    margin-bottom: 5px;
-    font-weight: bold;
+.leave_comment h2 {
+    font-family: 'Staatliches', cursive;
+    font-size: 50px;
+    text-align: center;
+}
+
+.leave_comment h3 {
+    font-family: 'Merriweather Sans', sans-serif;
+    line-height: 1.5;
+    font-size: 20px;
 }
 
 .leave_comment input[type="number"],

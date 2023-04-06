@@ -40,8 +40,8 @@
         </form>
     </div>
     <div class = "comment_section">
+        <h2>Comments</h2>
         {% if comments %}
-            <h2>Comments</h2>
             <ul>
                 {% for comment in comments %}
                 {% if comment.rating and comment.comment %}

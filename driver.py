@@ -78,7 +78,6 @@ def new_comment(movie_id):
     max_two += 1
 
     comments = Comments.query.filter_by(movie_id=movie_id).all()
-    print(comments)
 
     if max_two == 2:
         max_two = 0
@@ -115,7 +114,6 @@ def create_account(username):
     user = Users(username=username)
     db.session.add(user)
     db.session.commit()
-    print(f"Created user with username {username}")
     login_user(user)
     return flask.redirect(flask.url_for("index"))
 
