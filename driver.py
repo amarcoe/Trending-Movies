@@ -22,6 +22,11 @@ def load_user(id):
     return Users.query.get(id)
 
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return flask.render_template("login.html")
+
+
 create_table(app)
 
 
@@ -57,9 +62,7 @@ def handle_login():
                 login_user(new_user)
                 return flask.redirect(flask.url_for("index"))
             else:
-                flask.flash(
-                    "Username or password is incorrect, try typing it again or create an account."
-                )
+                flask.flash("You must fill both fields to create an account.")
             return flask.redirect(flask.url_for("login"))
 
 
