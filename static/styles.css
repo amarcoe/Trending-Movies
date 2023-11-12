@@ -154,3 +154,25 @@ img {
 .leave_comment input[type="submit"]:hover {
     background-color: #3e8e41;
 }
+
+.logout-button {
+    text-align: right; /* Position the logout button on the right */
+    background-color: #D62246;
+}
+
+.logout-button form {
+    display: inline;
+}
+
+.logout-button button {
+    background-color: #F5F0F6; /* Set the background color to red */
+    color: #000000; /* Set the button text color to green */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-right: 20px; /* Add margin to the right of the button */
+}

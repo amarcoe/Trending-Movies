@@ -11,6 +11,11 @@
    <title> {{ movie_data["title"]}} </title>
 </head>
 <body>
+    <div class="logout-button">
+        <form action="/logout">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
     <div class="container">
         <div class="left"></div>
         <img src="{{ movie_data["poster"] }}" alt="The poser of the movie" />

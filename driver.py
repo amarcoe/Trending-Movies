@@ -3,7 +3,7 @@ import Wiki_API
 import flask
 import os
 from database import create_table, Users, db, Comments
-from flask_login import LoginManager, login_required, login_user, current_user
+from flask_login import LoginManager, login_required, login_user, logout_user
 
 app = flask.Flask(__name__)
 app.secret_key = os.getenv("secret_key")
@@ -34,15 +34,17 @@ def login():
 def handle_login():
     form_data = flask.request.form
     username = form_data["username"]
-    user = Users.authenticate(username)
+    password = form_data["password"]
+    user = Users.can_create(username)
+    existing_user = Users.can_login(username, password)
 
     if "login" in flask.request.form:
-        if user:
+        if existing_user:
             login_user(user)
             return flask.redirect(flask.url_for("index"))
         else:
             flask.flash(
-                "That username doesn't exit, try typing it again or create an account."
+                "Username or password is incorrect, try typing it again or create an account."
             )
             return flask.redirect(flask.url_for("login"))
     elif "create_account" in flask.request.form:
@@ -50,7 +52,15 @@ def handle_login():
             flask.flash("That account already exists, please login")
             return flask.redirect(flask.url_for("login"))
         else:
-            return flask.redirect(flask.url_for("create_account", username=username))
+            if username and password:
+                new_user = Users.create_user(username, password)
+                login_user(new_user)
+                return flask.redirect(flask.url_for("index"))
+            else:
+                flask.flash(
+                    "Username or password is incorrect, try typing it again or create an account."
+                )
+            return flask.redirect(flask.url_for("login"))
 
 
 @app.route("/index", methods=["GET"])
@@ -109,13 +119,11 @@ def leave_comment():
     return flask.redirect(flask.url_for("new_comment", movie_id=form_data["movie_id"]))
 
 
-@app.route("/create/<username>")
-def create_account(username):
-    user = Users(username=username)
-    db.session.add(user)
-    db.session.commit()
-    login_user(user)
-    return flask.redirect(flask.url_for("index"))
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return flask.render_template("login.html")
 
 
 # app.run(debug=True)
